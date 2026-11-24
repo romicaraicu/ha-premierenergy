@@ -1,5 +1,6 @@
-# Grafic lunar de consum (opțional) - necesită cardul ApexCharts din HACS:
-#   HACS -> Frontend -> caută "apexcharts-card" -> Install.
+# Grafic lunar de consum (opțional) - necesită cardul apexcharts-card:
+#   Setări -> Marketplace -> Add from link -> RomRider/apexcharts-card -> Install
+#   (pe Home Assistant mai vechi de 2026.11: HACS -> Frontend -> apexcharts-card).
 # Înlocuiește `ro005e000000000` cu POD-ul tău (litere mici) și adaugă cardul
 # într-un dashboard (Adaugă card -> Manual -> lipește).
 

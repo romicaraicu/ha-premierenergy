@@ -2,7 +2,10 @@ __pycache__/
 *.pyc
 .venv/
 dump/
-dashboard/premierenergy_RO*.yaml
-dashboard/card_grafic_consum_RO*.yaml
+# fișiere generate de tools/genereaza_dashboard.py (conțin POD-ul)
+dashboard/premierenergy_*.yaml
+!dashboard/premierenergy_dashboard.yaml
+dashboard/card_grafic_consum_*.yaml
+!dashboard/card_grafic_consum_apexcharts.yaml
 .DS_Store
 .pytest_cache/

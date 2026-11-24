@@ -1,6 +1,6 @@
 # Dashboard Premier Energy pentru Home Assistant
 # ------------------------------------------------
-# Folosește doar carduri standard (fără dependențe HACS).
+# Folosește doar carduri standard (fără carduri custom din Marketplace sau HACS).
 #
 # 1. Înlocuiește peste tot `ro005e000000000` cu POD-ul tău scris cu litere mici
 #    (ex: RO005E123456789 -> ro005e123456789). Îl găsești în
