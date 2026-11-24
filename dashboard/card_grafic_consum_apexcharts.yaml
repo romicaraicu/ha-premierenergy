@@ -1,0 +1,34 @@
+# Grafic lunar de consum (opțional) - necesită cardul ApexCharts din HACS:
+#   HACS -> Frontend -> caută "apexcharts-card" -> Install.
+# Înlocuiește `ro005e000000000` cu POD-ul tău (litere mici) și adaugă cardul
+# într-un dashboard (Adaugă card -> Manual -> lipește).
+
+type: custom:apexcharts-card
+header:
+  show: true
+  title: Consum lunar (kWh)
+  show_states: false
+graph_span: 1y
+span:
+  end: month
+chart_type: line
+apex_config:
+  chart:
+    height: 260
+  plotOptions:
+    bar:
+      columnWidth: 60%
+      borderRadius: 4
+  dataLabels:
+    enabled: false
+series:
+  - entity: sensor.premierenergy_ro005e000000000_consum_ultima_luna
+    name: Consum
+    type: column
+    color: "#FF9241"
+    data_generator: |
+      const h = entity.attributes.istoric || [];
+      return h
+        .filter(e => e.pana_la)
+        .map(e => [new Date(e.pana_la).getTime(), e.kwh])
+        .reverse();

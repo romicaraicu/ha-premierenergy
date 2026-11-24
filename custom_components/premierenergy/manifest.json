@@ -1,0 +1,14 @@
+{
+  "domain": "premierenergy",
+  "name": "Premier Energy",
+  "codeowners": ["@romicaraicu"],
+  "config_flow": true,
+  "dependencies": [],
+  "documentation": "https://github.com/romicaraicu/ha-premierenergy",
+  "integration_type": "service",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/romicaraicu/ha-premierenergy/issues",
+  "loggers": ["custom_components.premierenergy"],
+  "requirements": [],
+  "version": "0.1.0"
+}

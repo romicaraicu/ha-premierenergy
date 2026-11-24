@@ -1,0 +1,72 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Cont Premier Energy",
+        "description": "Introdu datele de autentificare folosite pe app.premierenergy.ro.",
+        "data": { "email": "Email", "password": "Parolă" }
+      },
+      "pods": {
+        "title": "Locuri de consum",
+        "description": "Alege locurile de consum pe care vrei să le monitorizezi.",
+        "data": { "pods": "Locuri de consum", "scan_interval": "Interval de actualizare (ore)" }
+      },
+      "reauth_confirm": {
+        "title": "Reautentificare Premier Energy",
+        "description": "Parola pentru {email} nu mai este acceptată. Introdu parola nouă.",
+        "data": { "password": "Parolă" }
+      }
+    },
+    "error": {
+      "invalid_auth": "Email sau parolă incorecte.",
+      "cannot_connect": "Nu mă pot conecta la Premier Energy. Încearcă din nou mai târziu.",
+      "no_locations": "Contul nu are niciun loc de consum asociat.",
+      "unknown": "Eroare neașteptată. Verifică jurnalul (log)."
+    },
+    "abort": {
+      "already_configured": "Acest cont Premier Energy este deja configurat.",
+      "reauth_successful": "Reautentificare reușită."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Setări Premier Energy",
+        "data": { "pods": "Locuri de consum", "scan_interval": "Interval de actualizare (ore)" }
+      }
+    }
+  },
+  "entity": {
+    "sensor": {
+      "loc_consum": { "name": "Loc de consum" },
+      "consum_ultima_luna": { "name": "Consum ultima lună" },
+      "consum_an_curent": { "name": "Consum an curent" },
+      "total_de_plata": { "name": "Total de plată" },
+      "facturi_neplatite": { "name": "Facturi neplătite" },
+      "facturi_platite": { "name": "Facturi plătite" },
+      "ultima_factura": { "name": "Ultima factură" },
+      "urmatoarea_scadenta": { "name": "Următoarea scadență" },
+      "ultima_plata": { "name": "Ultima plată" },
+      "perioada_index": { "name": "Perioadă transmitere index" },
+      "perioada_index_inceput": { "name": "Început perioadă index" },
+      "perioada_index_sfarsit": { "name": "Sfârșit perioadă index" }
+    },
+    "binary_sensor": {
+      "perioada_index_activa": { "name": "Transmitere index permisă" },
+      "factura_restanta": { "name": "Factură restantă" }
+    },
+    "button": {
+      "actualizare": { "name": "Actualizare date" }
+    }
+  },
+  "services": {
+    "trimite_index": {
+      "name": "Transmite index",
+      "description": "Transmite indexul autocitit pentru un loc de consum (doar în perioada de transmitere).",
+      "fields": {
+        "pod": { "name": "POD", "description": "Codul POD al locului de consum." },
+        "index": { "name": "Index", "description": "Indexul citit de pe contor (număr întreg)." }
+      }
+    }
+  }
+}

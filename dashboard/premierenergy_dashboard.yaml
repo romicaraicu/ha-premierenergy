@@ -1,0 +1,199 @@
+# Dashboard Premier Energy pentru Home Assistant
+# ------------------------------------------------
+# Folosește doar carduri standard (fără dependențe HACS).
+#
+# 1. Înlocuiește peste tot `ro005e000000000` cu POD-ul tău scris cu litere mici
+#    (ex: RO005E123456789 -> ro005e123456789). Îl găsești în
+#    Setări -> Dispozitive și servicii -> Premier Energy -> dispozitiv.
+#    Sau rulează: python3 tools/genereaza_dashboard.py RO005E123456789
+# 2. Setări -> Panouri de bord -> Adaugă panou -> "Pornește de la zero"
+# 3. Deschide panoul -> ✏️ -> ⋮ -> "Editor de configurație brută" -> lipește tot fișierul.
+
+title: Premier Energy
+views:
+  - title: Premier Energy
+    path: premier-energy
+    icon: mdi:lightning-bolt-circle
+    type: sections
+    max_columns: 3
+    sections:
+      # ------------------------------------------------------------ SUMAR
+      - type: grid
+        cards:
+          - type: heading
+            heading: Sumar
+            icon: mdi:home-lightning-bolt-outline
+            badges:
+              - type: entity
+                entity: binary_sensor.premierenergy_ro005e000000000_factura_restanta
+                show_state: true
+                color: red
+                visibility:
+                  - condition: state
+                    entity: binary_sensor.premierenergy_ro005e000000000_factura_restanta
+                    state: "on"
+          - type: markdown
+            content: |-
+              ### {{ states('sensor.premierenergy_ro005e000000000_loc_consum') }}
+
+              POD **{{ state_attr('sensor.premierenergy_ro005e000000000_loc_consum', 'pod') }}**
+              · Contract **{{ state_attr('sensor.premierenergy_ro005e000000000_loc_consum', 'contract_furnizare') or '—' }}**
+              · e-Factură {{ '✅' if state_attr('sensor.premierenergy_ro005e000000000_loc_consum', 'e_factura_activa') else '❌' }}
+          - type: tile
+            entity: sensor.premierenergy_ro005e000000000_total_de_plata
+            name: Total de plată
+            color: orange
+            grid_options:
+              columns: 6
+          - type: tile
+            entity: sensor.premierenergy_ro005e000000000_urmatoarea_scadenta
+            name: Scadență
+            color: deep-orange
+            grid_options:
+              columns: 6
+          - type: tile
+            entity: sensor.premierenergy_ro005e000000000_consum_ultima_luna
+            name: Consum ultima lună
+            color: amber
+            grid_options:
+              columns: 6
+          - type: tile
+            entity: sensor.premierenergy_ro005e000000000_consum_an_curent
+            name: Consum an curent
+            color: yellow
+            grid_options:
+              columns: 6
+          - type: tile
+            entity: sensor.premierenergy_ro005e000000000_ultima_plata
+            name: Ultima plată
+            color: green
+            grid_options:
+              columns: 6
+          - type: tile
+            entity: button.premierenergy_ro005e000000000_actualizare
+            name: Actualizează
+            color: blue
+            tap_action:
+              action: perform-action
+              perform_action: button.press
+              target:
+                entity_id: button.premierenergy_ro005e000000000_actualizare
+            grid_options:
+              columns: 6
+
+      # ---------------------------------------------- TRANSMITERE INDEX
+      - type: grid
+        cards:
+          - type: heading
+            heading: Transmitere index
+            icon: mdi:counter
+          - type: markdown
+            content: |-
+              {% set s = 'sensor.premierenergy_ro005e000000000_perioada_index' %}
+              {% set activ = is_state('binary_sensor.premierenergy_ro005e000000000_perioada_index_activa', 'on') %}
+              {% if activ %}
+              <ha-alert alert-type="success">
+              **Poți transmite indexul acum!** Mai ai {{ state_attr(s, 'zile_ramase') }} zile.
+              </ha-alert>
+              {% elif state_attr(s, 'zile_pana_la_inceput') %}
+              <ha-alert alert-type="info">
+              Perioada începe în {{ state_attr(s, 'zile_pana_la_inceput') }} zile.
+              </ha-alert>
+              {% endif %}
+
+              **Perioadă:** {{ states(s) }}
+              {% if state_attr(s, 'index_transmis') is not none %}
+
+              **Index transmis luna aceasta:** {{ 'da ✅' if state_attr(s, 'index_transmis') else 'nu' }}
+              {% endif %}
+          - type: tile
+            entity: binary_sensor.premierenergy_ro005e000000000_perioada_index_activa
+            name: Transmitere permisă
+            grid_options:
+              columns: 12
+          # Card pentru transmiterea indexului direct din dashboard.
+          # Necesită helper-ul input_number.premierenergy_index și scriptul
+          # script.premierenergy_trimite_index (vezi README -> "Transmitere index din dashboard").
+          # Scoate comentariile după ce le creezi:
+          # - type: entities
+          #   visibility:
+          #     - condition: state
+          #       entity: binary_sensor.premierenergy_ro005e000000000_perioada_index_activa
+          #       state: "on"
+          #   entities:
+          #     - entity: input_number.premierenergy_index
+          #       name: Index contor
+          #     - type: button
+          #       name: Transmite indexul
+          #       icon: mdi:send
+          #       action_name: Trimite
+          #       tap_action:
+          #         action: perform-action
+          #         perform_action: script.premierenergy_trimite_index
+          #         confirmation:
+          #           text: Sigur trimiți indexul?
+
+      # --------------------------------------------------------- FACTURI
+      - type: grid
+        column_span: 1
+        cards:
+          - type: heading
+            heading: Facturi de plată
+            icon: mdi:file-alert-outline
+          - type: markdown
+            content: |-
+              {% set f = state_attr('sensor.premierenergy_ro005e000000000_facturi_neplatite', 'facturi') or [] %}
+              {% if f | count == 0 %}
+              <ha-alert alert-type="success">Nu ai facturi de plată. 🎉</ha-alert>
+              {% else %}
+              | Nr. | Emisă | Scadență | Rest | |
+              |:--|:--|:--|--:|:--|
+              {% for i in f -%}
+              | {{ i.numar }} | {{ (i.data_emitere | as_datetime).strftime('%d.%m.%Y') if i.data_emitere else '—' }} | {{ (i.scadenta | as_datetime).strftime('%d.%m.%Y') if i.scadenta else '—' }} | **{{ '%.2f' | format(i.rest_plata) }}** | {{ '🔴 restantă' if i.restanta else ('🟠 parțial' if i.status == 'Parțial plătită' else '🟡') }} |
+              {% endfor %}
+
+              **Total: {{ '%.2f' | format(state_attr('sensor.premierenergy_ro005e000000000_facturi_neplatite', 'total_rest_plata')) }} lei**
+              {% endif %}
+
+      - type: grid
+        cards:
+          - type: heading
+            heading: Facturi plătite
+            icon: mdi:file-check-outline
+          - type: markdown
+            content: |-
+              {% set f = state_attr('sensor.premierenergy_ro005e000000000_facturi_platite', 'facturi') or [] %}
+              {% if f | count == 0 %}
+              Nu există facturi plătite.
+              {% else %}
+              | Nr. | Emisă | Valoare |
+              |:--|:--|--:|
+              {% for i in f -%}
+              | {{ i.numar }} | {{ (i.data_emitere | as_datetime).strftime('%d.%m.%Y') if i.data_emitere else '—' }} | {{ '%.2f' | format(i.valoare) }} lei |
+              {% endfor %}
+              {% endif %}
+
+      # ---------------------------------------------------------- CONSUM
+      - type: grid
+        cards:
+          - type: heading
+            heading: Istoric consum
+            icon: mdi:chart-bar
+          - type: markdown
+            content: |-
+              {% set h = state_attr('sensor.premierenergy_ro005e000000000_consum_ultima_luna', 'istoric') or [] %}
+              {% set maxv = (h | map(attribute='kwh') | max) if h else 0 %}
+              {% if h | count == 0 %}
+              Nu există date de consum.
+              {% else %}
+              | Lună | kWh | |
+              |:--|--:|:--|
+              {% for e in h[:12] -%}
+              | {{ e.luna }} | **{{ e.kwh | round(0) | int }}** | {{ '█' * ((e.kwh / maxv * 20) | round(0) | int) if maxv else '' }} |
+              {% endfor %}
+              {% endif %}
+          - type: markdown
+            content: |-
+              {% set a = state_attr('sensor.premierenergy_ro005e000000000_consum_an_curent', 'consum_anual') or {} %}
+              **Total anual:**
+              {% for an, kwh in a | dictsort(reverse=true) %} {{ an }}: **{{ kwh | round(0) | int }} kWh**{{ ' ·' if not loop.last }}{% endfor %}

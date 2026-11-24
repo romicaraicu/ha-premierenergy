@@ -1,0 +1,15 @@
+trimite_index:
+  fields:
+    pod:
+      required: true
+      example: "RO005E000000000"
+      selector:
+        text:
+    index:
+      required: true
+      example: 12345
+      selector:
+        number:
+          min: 0
+          max: 9999999
+          mode: box
