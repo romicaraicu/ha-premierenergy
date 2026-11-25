@@ -64,7 +64,15 @@ async def test_entities(hass: HomeAssistant, mock_api) -> None:
     assert float(s("total_de_plata").state) == 170.0
     assert s("total_de_plata").attributes["unit_of_measurement"] == "RON"
     assert s("facturi_neplatite").state == "2"
-    assert s("facturi_platite").state == "1"
+    assert s("facturi_platite").state == "2"
+    # cost pe ani: 2026 = 210.5 + 250 + 80 facturat, 210.5 + 150 plătit; 2025 fără storno
+    assert float(s("cost_an_curent").state) == 360.5
+    costs = s("cost_an_curent").attributes["cost_anual"]
+    assert list(costs) == ["2026", "2025"]
+    assert costs["2026"]["facturat"] == 540.5 and costs["2026"]["de_plata"] == 180.0
+    assert costs["2025"] == {"facturat": 300.0, "platit": 300.0, "de_plata": 0.0,
+                             "facturi": 1, "kwh": None, "lei_pe_kwh": None}
+    assert costs["2026"]["lei_pe_kwh"] == round(540.5 / 455, 2)
     assert s("ultima_factura").attributes["numar"] == "900003"
     assert s("ultima_plata").state == "210.5"
     assert s("urmatoarea_scadenta").state != "unknown"
@@ -145,4 +153,6 @@ async def test_dashboard_templates_render(hass: HomeAssistant, mock_api) -> None
     # tabelele markdown trebuie să fie pe linii separate
     assert "| 900003 | 20.11.2026 |" in joined
     assert "|:--|:--|:--|--:|:--|\n| 900003" in joined
+    assert "| **2026** | **360.50** | 540.50 | 180.00 | 455 | 1.19 |" in joined
+    assert "| **2025** | **300.00** | 300.00 | — | — | — |" in joined
     print(joined)

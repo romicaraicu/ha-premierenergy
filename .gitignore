@@ -9,3 +9,4 @@ dashboard/card_grafic_consum_*.yaml
 !dashboard/card_grafic_consum_apexcharts.yaml
 .DS_Store
 .pytest_cache/
+release-notes.md

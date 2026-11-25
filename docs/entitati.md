@@ -2,7 +2,7 @@
 
 [← Înapoi la README](../README.md)
 
-Fiecare loc de consum (POD) devine un dispozitiv cu 15 entități. Toate ID-urile au aceeași formă:
+Fiecare loc de consum (POD) devine un dispozitiv cu 16 entități. Toate ID-urile au aceeași formă:
 
 ```
 <platformă>.premierenergy_<pod>_<cheie>
@@ -17,7 +17,8 @@ Pe scurt:
 | 🏠 Loc | `loc_consum` | sensor | adresa |
 | ⚡ Consum | `consum_ultima_luna` | sensor · energie | kWh |
 | | `consum_an_curent` | sensor · energie | kWh |
-| 💸 Bani | `total_de_plata` | sensor · monetar | RON |
+| 💸 Bani | `cost_an_curent` | sensor · monetar | RON |
+| | `total_de_plata` | sensor · monetar | RON |
 | | `facturi_neplatite` | sensor | număr facturi |
 | | `facturi_platite` | sensor | număr facturi |
 | | `ultima_factura` | sensor · monetar | RON |
@@ -102,6 +103,25 @@ pdf: true                 # PDF disponibil în portal
 ```
 
 ### Senzorii
+
+**`sensor.…_cost_an_curent`** (RON): cât ai plătit pe facturile emise în anul calendaristic curent. Atributul `cost_anual` conține istoricul pe toți anii pentru care portalul are facturi, cel mai nou primul:
+
+```yaml
+cost_anual:
+  "2026":
+    facturat: 540.5     # suma facturilor emise în an
+    platit: 360.5       # facturat − rest de plată
+    de_plata: 180.0     # încă neachitat din facturile anului
+    facturi: 3
+    kwh: 455.0          # consumul anului (după data citirii)
+    lei_pe_kwh: 1.19    # facturat / kWh, medie aproximativă
+  "2025":
+    ...
+```
+
+Anul se stabilește după **data emiterii** facturii, deci factura din ianuarie pentru consumul din decembrie intră în anul nou. Facturile stornate și documentele storno nu sunt incluse, iar facturile de credit (cu valoare negativă) scad costul anului. `lei_pe_kwh` pune alături facturi și consum care pot fi decalate cu o lună, așa că e o medie orientativă. Câți ani apar depinde de istoricul pe care îl oferă Premier Energy.
+
+Mai sunt `facturat`, `de_plata` și `facturi`, pentru anul curent.
 
 **`sensor.…_total_de_plata`** (RON): totalul de plată, calculat ca în aplicație: resturile tuturor facturilor plus soldul neasociat. O valoare negativă înseamnă că ai bani în avans.
 

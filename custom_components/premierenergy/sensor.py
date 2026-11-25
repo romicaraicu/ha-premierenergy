@@ -59,6 +59,24 @@ def _current_year_kwh(d: PodData) -> float | None:
     return totals.get(str(date.today().year), 0.0)
 
 
+def _current_year_paid(d: PodData) -> float | None:
+    costs = d.yearly_costs()
+    if not costs:
+        return None
+    return costs.get(str(date.today().year), {}).get("platit", 0.0)
+
+
+def _cost_attrs(d: PodData) -> dict[str, Any]:
+    costs = d.yearly_costs()
+    current = costs.get(str(date.today().year), {})
+    return {
+        "facturat": current.get("facturat", 0.0),
+        "de_plata": current.get("de_plata", 0.0),
+        "facturi": current.get("facturi", 0),
+        "cost_anual": costs,
+    }
+
+
 def _balance_attrs(d: PodData) -> dict[str, Any]:
     return {
         "rest_facturi": d.invoices_balance,
@@ -134,6 +152,15 @@ SENSORS: tuple[PESensorDescription, ...] = (
         suggested_display_precision=0,
         value_fn=_current_year_kwh,
         attrs_fn=lambda d: {"consum_anual": d.yearly_consumption()},
+    ),
+    PESensorDescription(
+        key="cost_an_curent",
+        icon="mdi:cash-multiple",
+        device_class=SensorDeviceClass.MONETARY,
+        native_unit_of_measurement=CURRENCY,
+        suggested_display_precision=2,
+        value_fn=_current_year_paid,
+        attrs_fn=_cost_attrs,
     ),
     PESensorDescription(
         key="total_de_plata",

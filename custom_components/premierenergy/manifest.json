@@ -10,5 +10,5 @@
   "issue_tracker": "https://github.com/romicaraicu/ha-premierenergy/issues",
   "loggers": ["custom_components.premierenergy"],
   "requirements": [],
-  "version": "0.1.1"
+  "version": "0.2.0"
 }

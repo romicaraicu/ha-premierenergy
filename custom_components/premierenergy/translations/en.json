@@ -4,17 +4,25 @@
       "user": {
         "title": "Premier Energy account",
         "description": "Enter the credentials you use on app.premierenergy.ro.",
-        "data": { "email": "Email", "password": "Password" }
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
       },
       "pods": {
         "title": "Consumption locations",
         "description": "Choose the consumption locations to monitor.",
-        "data": { "pods": "Consumption locations", "scan_interval": "Update interval (hours)" }
+        "data": {
+          "pods": "Consumption locations",
+          "scan_interval": "Update interval (hours)"
+        }
       },
       "reauth_confirm": {
         "title": "Premier Energy re-authentication",
         "description": "The password for {email} is no longer accepted. Enter the new password.",
-        "data": { "password": "Password" }
+        "data": {
+          "password": "Password"
+        }
       }
     },
     "error": {
@@ -32,31 +40,67 @@
     "step": {
       "init": {
         "title": "Premier Energy settings",
-        "data": { "pods": "Consumption locations", "scan_interval": "Update interval (hours)" }
+        "data": {
+          "pods": "Consumption locations",
+          "scan_interval": "Update interval (hours)"
+        }
       }
     }
   },
   "entity": {
     "sensor": {
-      "loc_consum": { "name": "Consumption location" },
-      "consum_ultima_luna": { "name": "Last month consumption" },
-      "consum_an_curent": { "name": "Current year consumption" },
-      "total_de_plata": { "name": "Amount due" },
-      "facturi_neplatite": { "name": "Unpaid invoices" },
-      "facturi_platite": { "name": "Paid invoices" },
-      "ultima_factura": { "name": "Latest invoice" },
-      "urmatoarea_scadenta": { "name": "Next due date" },
-      "ultima_plata": { "name": "Last payment" },
-      "perioada_index": { "name": "Meter reading period" },
-      "perioada_index_inceput": { "name": "Meter reading period start" },
-      "perioada_index_sfarsit": { "name": "Meter reading period end" }
+      "loc_consum": {
+        "name": "Consumption location"
+      },
+      "consum_ultima_luna": {
+        "name": "Last month consumption"
+      },
+      "consum_an_curent": {
+        "name": "Current year consumption"
+      },
+      "cost_an_curent": {
+        "name": "Paid this year"
+      },
+      "total_de_plata": {
+        "name": "Amount due"
+      },
+      "facturi_neplatite": {
+        "name": "Unpaid invoices"
+      },
+      "facturi_platite": {
+        "name": "Paid invoices"
+      },
+      "ultima_factura": {
+        "name": "Latest invoice"
+      },
+      "urmatoarea_scadenta": {
+        "name": "Next due date"
+      },
+      "ultima_plata": {
+        "name": "Last payment"
+      },
+      "perioada_index": {
+        "name": "Meter reading period"
+      },
+      "perioada_index_inceput": {
+        "name": "Meter reading period start"
+      },
+      "perioada_index_sfarsit": {
+        "name": "Meter reading period end"
+      }
     },
     "binary_sensor": {
-      "perioada_index_activa": { "name": "Meter reading allowed" },
-      "factura_restanta": { "name": "Overdue invoice" }
+      "perioada_index_activa": {
+        "name": "Meter reading allowed"
+      },
+      "factura_restanta": {
+        "name": "Overdue invoice"
+      }
     },
     "button": {
-      "actualizare": { "name": "Refresh data" }
+      "actualizare": {
+        "name": "Refresh data"
+      }
     }
   },
   "services": {
@@ -64,8 +108,14 @@
       "name": "Submit meter reading",
       "description": "Submit the self-read meter index for a location (only during the reading period).",
       "fields": {
-        "pod": { "name": "POD", "description": "POD code of the consumption location." },
-        "index": { "name": "Index", "description": "Meter reading (integer)." }
+        "pod": {
+          "name": "POD",
+          "description": "POD code of the consumption location."
+        },
+        "index": {
+          "name": "Index",
+          "description": "Meter reading (integer)."
+        }
       }
     }
   }

@@ -25,6 +25,10 @@ def sample_raw():
             "perioada_citire_sfarsit": (t + timedelta(days=3)).isoformat(),
         }],
         "facturi": [
+            {"POD": POD, "OPBEL": "000800001", "BLDAT": "2025-06-05", "FAEDN": "2025-06-25",
+             "factCurenta": 300, "restPlata": 0},
+            {"POD": POD, "OPBEL": "000800002", "BLDAT": "2025-03-05", "factCurenta": -40,
+             "restPlata": 0, "DOC_TYPE": "S"},
             {"POD": POD, "OPBEL": "000900001", "BLDAT": "2026-10-05", "FAEDN": "2026-10-25",
              "factCurenta": 210.5, "restPlata": 0, "existaPDF": True},
             {"POD": POD, "OPBEL": "000900002", "BLDAT": "2026-11-05",

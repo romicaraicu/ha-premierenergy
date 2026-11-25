@@ -27,6 +27,7 @@ Dacă ai contract de energie electrică cu Premier Energy și folosești Home As
 | **Am ceva de plată?** | `Total de plată` (lei) și `Facturi neplătite`, cu lista completă |
 | **Am vreo factură întârziată?** | senzorul binar `Factură restantă` și `Următoarea scadență` |
 | **Ce am plătit deja?** | `Facturi plătite` (ultimele 12) și `Ultima plată` |
+| **Cât m-a costat curentul pe fiecare an?** | `Plătit în anul curent` + tabel pe ani: plătit, facturat, kWh, lei/kWh |
 | **Când pot transmite indexul?** | `Perioadă transmitere index` + senzorul `Transmitere index permisă` |
 | **Ce date are locul de consum?** | `Loc de consum`: adresă, POD, contracte, e-Factură |
 
@@ -68,6 +69,8 @@ Instalarea pe versiuni mai vechi (HACS sau manual), alegerea locurilor de consum
 | 🧪 [Rețete](docs/retete.md) | Automatizări gata de copiat și trimiterea indexului din dashboard |
 | ❓ [Întrebări](docs/intrebari.md) | Siguranța datelor, statusurile facturilor, limitări |
 | 🛠️ [Depanare](docs/depanare.md) | Log-uri, diagnostic, mesaje de eroare și ce înseamnă |
+| 🔄 [Actualizare](docs/actualizare.md) | Cum aduci o versiune nouă în HA și cum publici una (commit, tag, release) |
+| 📜 [Istoric versiuni](CHANGELOG.md) | Ce s-a schimbat în fiecare versiune |
 
 ---
 

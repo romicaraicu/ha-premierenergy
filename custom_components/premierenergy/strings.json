@@ -4,17 +4,25 @@
       "user": {
         "title": "Cont Premier Energy",
         "description": "Introdu datele de autentificare folosite pe app.premierenergy.ro.",
-        "data": { "email": "Email", "password": "Parolă" }
+        "data": {
+          "email": "Email",
+          "password": "Parolă"
+        }
       },
       "pods": {
         "title": "Locuri de consum",
         "description": "Alege locurile de consum pe care vrei să le monitorizezi.",
-        "data": { "pods": "Locuri de consum", "scan_interval": "Interval de actualizare (ore)" }
+        "data": {
+          "pods": "Locuri de consum",
+          "scan_interval": "Interval de actualizare (ore)"
+        }
       },
       "reauth_confirm": {
         "title": "Reautentificare Premier Energy",
         "description": "Parola pentru {email} nu mai este acceptată. Introdu parola nouă.",
-        "data": { "password": "Parolă" }
+        "data": {
+          "password": "Parolă"
+        }
       }
     },
     "error": {
@@ -32,31 +40,67 @@
     "step": {
       "init": {
         "title": "Setări Premier Energy",
-        "data": { "pods": "Locuri de consum", "scan_interval": "Interval de actualizare (ore)" }
+        "data": {
+          "pods": "Locuri de consum",
+          "scan_interval": "Interval de actualizare (ore)"
+        }
       }
     }
   },
   "entity": {
     "sensor": {
-      "loc_consum": { "name": "Loc de consum" },
-      "consum_ultima_luna": { "name": "Consum ultima lună" },
-      "consum_an_curent": { "name": "Consum an curent" },
-      "total_de_plata": { "name": "Total de plată" },
-      "facturi_neplatite": { "name": "Facturi neplătite" },
-      "facturi_platite": { "name": "Facturi plătite" },
-      "ultima_factura": { "name": "Ultima factură" },
-      "urmatoarea_scadenta": { "name": "Următoarea scadență" },
-      "ultima_plata": { "name": "Ultima plată" },
-      "perioada_index": { "name": "Perioadă transmitere index" },
-      "perioada_index_inceput": { "name": "Început perioadă index" },
-      "perioada_index_sfarsit": { "name": "Sfârșit perioadă index" }
+      "loc_consum": {
+        "name": "Loc de consum"
+      },
+      "consum_ultima_luna": {
+        "name": "Consum ultima lună"
+      },
+      "consum_an_curent": {
+        "name": "Consum an curent"
+      },
+      "cost_an_curent": {
+        "name": "Plătit în anul curent"
+      },
+      "total_de_plata": {
+        "name": "Total de plată"
+      },
+      "facturi_neplatite": {
+        "name": "Facturi neplătite"
+      },
+      "facturi_platite": {
+        "name": "Facturi plătite"
+      },
+      "ultima_factura": {
+        "name": "Ultima factură"
+      },
+      "urmatoarea_scadenta": {
+        "name": "Următoarea scadență"
+      },
+      "ultima_plata": {
+        "name": "Ultima plată"
+      },
+      "perioada_index": {
+        "name": "Perioadă transmitere index"
+      },
+      "perioada_index_inceput": {
+        "name": "Început perioadă index"
+      },
+      "perioada_index_sfarsit": {
+        "name": "Sfârșit perioadă index"
+      }
     },
     "binary_sensor": {
-      "perioada_index_activa": { "name": "Transmitere index permisă" },
-      "factura_restanta": { "name": "Factură restantă" }
+      "perioada_index_activa": {
+        "name": "Transmitere index permisă"
+      },
+      "factura_restanta": {
+        "name": "Factură restantă"
+      }
     },
     "button": {
-      "actualizare": { "name": "Actualizare date" }
+      "actualizare": {
+        "name": "Actualizare date"
+      }
     }
   },
   "services": {
@@ -64,8 +108,14 @@
       "name": "Transmite index",
       "description": "Transmite indexul autocitit pentru un loc de consum (doar în perioada de transmitere).",
       "fields": {
-        "pod": { "name": "POD", "description": "Codul POD al locului de consum." },
-        "index": { "name": "Index", "description": "Indexul citit de pe contor (număr întreg)." }
+        "pod": {
+          "name": "POD",
+          "description": "Codul POD al locului de consum."
+        },
+        "index": {
+          "name": "Index",
+          "description": "Indexul citit de pe contor (număr întreg)."
+        }
       }
     }
   }

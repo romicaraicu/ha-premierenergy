@@ -197,3 +197,31 @@ views:
               {% set a = state_attr('sensor.premierenergy_ro005e000000000_consum_an_curent', 'consum_anual') or {} %}
               **Total anual:**
               {% for an, kwh in a | dictsort(reverse=true) %} {{ an }}: **{{ kwh | round(0) | int }} kWh**{{ ' ·' if not loop.last }}{% endfor %}
+
+      # ------------------------------------------------------- COST PE ANI
+      - type: grid
+        cards:
+          - type: heading
+            heading: Cost pe ani
+            icon: mdi:cash-multiple
+          - type: tile
+            entity: sensor.premierenergy_ro005e000000000_cost_an_curent
+            name: Plătit anul acesta
+            color: green
+            grid_options:
+              columns: 12
+          - type: markdown
+            content: |-
+              {% set c = state_attr('sensor.premierenergy_ro005e000000000_cost_an_curent', 'cost_anual') or {} %}
+              {% set maxv = (c.values() | map(attribute='platit') | max) if c else 0 %}
+              {% if c | count == 0 %}
+              Nu există facturi.
+              {% else %}
+              | An | Plătit | Facturat | De plată | kWh | lei/kWh | |
+              |:--|--:|--:|--:|--:|--:|:--|
+              {% for an, v in c | dictsort(reverse=true) -%}
+              | **{{ an }}** | **{{ '%.2f' | format(v.platit) }}** | {{ '%.2f' | format(v.facturat) }} | {{ '%.2f' | format(v.de_plata) if v.de_plata else '—' }} | {{ v.kwh | round(0) | int if v.kwh else '—' }} | {{ '%.2f' | format(v.lei_pe_kwh) if v.lei_pe_kwh else '—' }} | {{ '█' * ((v.platit / maxv * 12) | round(0) | int) if maxv > 0 and v.platit > 0 else '' }} |
+              {% endfor %}
+
+              <small>Sume în lei, după data emiterii facturii. Facturile stornate nu sunt incluse.</small>
+              {% endif %}

@@ -337,6 +337,34 @@ class PodData:
                 totals[str(ref.year)] = round(totals.get(str(ref.year), 0.0) + entry.kwh, 2)
         return totals
 
+    def yearly_costs(self) -> dict[str, dict[str, Any]]:
+        """Cost pe ani, după data emiterii facturii.
+
+        Folosește toate facturile active (fără stornări): `facturat` e suma
+        valorilor, `platit` = facturat - rest de plată, `de_plata` = restul.
+        Facturile de credit (valoare negativă) scad costul anului.
+        """
+        kwh_by_year = self.yearly_consumption()
+        years: dict[str, dict[str, Any]] = {}
+        for inv in self.active_invoices:
+            if inv.data_emitere is None:
+                continue
+            year = years.setdefault(
+                str(inv.data_emitere.year),
+                {"facturat": 0.0, "platit": 0.0, "de_plata": 0.0, "facturi": 0},
+            )
+            year["facturat"] += inv.valoare
+            year["de_plata"] += max(inv.rest_plata, 0.0)
+            year["platit"] += inv.valoare - max(inv.rest_plata, 0.0)
+            year["facturi"] += 1
+        for name, year in years.items():
+            for key in ("facturat", "platit", "de_plata"):
+                year[key] = round(year[key], 2)
+            kwh = kwh_by_year.get(name)
+            year["kwh"] = kwh
+            year["lei_pe_kwh"] = round(year["facturat"] / kwh, 2) if kwh else None
+        return dict(sorted(years.items(), reverse=True))
+
     # -- plăți
     @property
     def last_payment(self) -> dict[str, Any] | None:
@@ -358,6 +386,7 @@ class PodData:
             "consum_ultima_luna_kwh": round(last.kwh, 2) if last else None,
             "luna": last.luna if last else None,
             "consum_anual_kwh": self.yearly_consumption(),
+            "cost_anual": self.yearly_costs(),
             "total_de_plata_lei": self.total_balance,
             "restant_lei": self.overdue_amount,
             "facturi_neplatite": len(self.unpaid_invoices),

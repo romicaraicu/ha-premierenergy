@@ -96,7 +96,7 @@ Apoi repornește Home Assistant. La această metodă, actualizările le copiezi 
 2. Introdu **emailul** și **parola** de pe app.premierenergy.ro
 3. Dacă ai **mai multe locuri de consum**, bifează-le pe cele care te interesează și alege la câte ore se citesc datele (implicit 6). Cu un singur loc de consum, ecranul ăsta nu mai apare.
 
-Gata. Fiecare loc de consum devine un dispozitiv „Premier Energy *adresa*”, cu 12 senzori, 2 senzori binari și un buton. Ce înseamnă fiecare găsești în [entitati.md](entitati.md).
+Gata. Fiecare loc de consum devine un dispozitiv „Premier Energy *adresa*”, cu 13 senzori, 2 senzori binari și un buton. Ce înseamnă fiecare găsești în [entitati.md](entitati.md).
 
 **Dacă formularul afișează o eroare:**
 
@@ -111,11 +111,12 @@ Gata. Fiecare loc de consum devine un dispozitiv „Premier Energy *adresa*”, 
 
 ## 4. Pune dashboard-ul
 
-Dashboard-ul din `dashboard/premierenergy_dashboard.yaml` folosește doar carduri incluse în Home Assistant. Conține patru zone:
+Dashboard-ul din `dashboard/premierenergy_dashboard.yaml` folosește doar carduri incluse în Home Assistant. Conține cinci zone:
 - **Sumar** (total de plată, scadență, consum, ultima plată)
 - **Transmitere index**
 - **Facturi** (de plată și plătite)
 - **Istoric consum**, cu bare
+- **Cost pe ani**: plătit, facturat, rest de plată, kWh și preț mediu pe kWh
 
 **Pas 1: află POD-ul.** Îl găsești pe dispozitiv, la numărul de serie, sau în atributul `pod` al senzorului *Loc de consum*.
 
